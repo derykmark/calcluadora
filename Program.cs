@@ -66,8 +66,8 @@ static int LerOpcaoUsuario()
     while (true)
     {
         Console.WriteLine("Informe uma opcao (1-4) ou (-1 para sair):");
-        string entrada = Console.ReadLine();
-        if (int.TryParse(entrada, out opcao))
+        string entrada = Console.ReadLine() ?? string.Empty; // Use null-coalescing operator to ensure non-null value  
+        if (!string.IsNullOrEmpty(entrada) && int.TryParse(entrada, out opcao))
         {
             return opcao;
         }
@@ -78,7 +78,7 @@ static int LerOpcaoUsuario()
 static void MontaRequisicao(ref decimal valor1, ref decimal valor2, out string valorDigitado, out string valorDigitado2, out bool isNumero1, out bool isNumero2)
 {
     Console.WriteLine("Informe o Primeiro Numero:");
-    valorDigitado = Console.ReadLine();
+    valorDigitado = Console.ReadLine() ?? string.Empty; // Use null-coalescing operator to ensure non-null value  
     isNumero1 = VerificaSeENumero(valorDigitado);
 
     if (isNumero1)
@@ -91,7 +91,7 @@ static void MontaRequisicao(ref decimal valor1, ref decimal valor2, out string v
     }
 
     Console.WriteLine("Informe o Segundo Numero:");
-    valorDigitado2 = Console.ReadLine();
+    valorDigitado2 = Console.ReadLine() ?? string.Empty; // Use null-coalescing operator to ensure non-null value  
     isNumero2 = VerificaSeENumero(valorDigitado2);
     Console.WriteLine("\n");
 
