@@ -17,5 +17,7 @@ namespace DotNet.Operadores
             }
             return a / b;
         }
+        public decimal Porcentagem(decimal total, decimal percentual) => (total * percentual) / 100;
+        
     }
 }
