@@ -18,41 +18,29 @@ do
 
 static void ExecutarOperacao(int opcaoCalculadora, Operacoes operacoes)
 {
-    decimal valor1 = 0, valor2 = 0;
-    string valorDigitado, valorDigitado2;
-    bool isNumero1, isNumero2;
+    var (valor1, valor2, isValido) = MontaRequisicao();
 
-    switch (opcaoCalculadora)
+    if (isValido)
     {
-        case 1:
-            Console.WriteLine("------------------- SOMA ------------------- \n");
-            break;
-        case 2:
-            Console.WriteLine("------------------- SUBTRACAO ------------------- \n");
-            break;
-        case 3:
-            Console.WriteLine("------------------- MULTIPLICACAO ------------------- \n");
-            break;
-        case 4:
-            Console.WriteLine("------------------- DIVISAO ------------------- \n");
-            break;
-        default:
-            Console.WriteLine("Opcao invalida. Escolha entre 1 e 4.\n");
-            return;
-    }
-
-    MontaRequisicao(ref valor1, ref valor2, out valorDigitado, out valorDigitado2, out isNumero1, out isNumero2);
-
-    if (isNumero1 && isNumero2)
-    {
-        Console.WriteLine("RESULTADO");
-        switch (opcaoCalculadora)
+        Console.WriteLine("---------------- RESULTADO ---------------- \n");
+        decimal? resultado = opcaoCalculadora switch
         {
-            case 1: operacoes.Somar(valor1, valor2); break;
-            case 2: operacoes.Subtrair(valor1, valor2); break;
-            case 3: operacoes.Multiplicar(valor1, valor2); break;
-            case 4: operacoes.Dividir(valor1, valor2); break;
+            1 => operacoes.Somar(valor1, valor2),
+            2 => operacoes.Subtrair(valor1, valor2),
+            3 => operacoes.Multiplicar(valor1, valor2),
+            4 => operacoes.Dividir(valor1, valor2),
+            _ => null
+        };
+
+        if (resultado.HasValue)
+        {
+            Console.WriteLine($"Resultado: {resultado.Value}\n");
         }
+        else
+        {
+            Console.WriteLine("Erro: Divisão por zero não é permitida.\n");
+        }
+        Console.WriteLine("-------------------------------------------\n");
     }
     else
     {
@@ -62,12 +50,11 @@ static void ExecutarOperacao(int opcaoCalculadora, Operacoes operacoes)
 
 static int LerOpcaoUsuario()
 {
-    int opcao;
     while (true)
     {
         Console.WriteLine("Informe uma opcao (1-4) ou (-1 para sair):");
-        string entrada = Console.ReadLine() ?? string.Empty; // Use null-coalescing operator to ensure non-null value  
-        if (!string.IsNullOrEmpty(entrada) && int.TryParse(entrada, out opcao))
+        string entrada = Console.ReadLine() ?? string.Empty;
+        if (int.TryParse(entrada, out int opcao))
         {
             return opcao;
         }
@@ -75,39 +62,25 @@ static int LerOpcaoUsuario()
     }
 }
 
-static void MontaRequisicao(ref decimal valor1, ref decimal valor2, out string valorDigitado, out string valorDigitado2, out bool isNumero1, out bool isNumero2)
+static (decimal, decimal, bool) MontaRequisicao()
 {
     Console.WriteLine("Informe o Primeiro Numero:");
-    valorDigitado = Console.ReadLine() ?? string.Empty; // Use null-coalescing operator to ensure non-null value  
-    isNumero1 = VerificaSeENumero(valorDigitado);
-
-    if (isNumero1)
-    {
-        valor1 = decimal.Parse(valorDigitado);
-    }
-    else
-    {
-        Console.WriteLine("Informe um numero valido.");
-    }
+    string valorDigitado = Console.ReadLine() ?? string.Empty;
+    bool isNumero1 = decimal.TryParse(valorDigitado, out decimal valor1);
 
     Console.WriteLine("Informe o Segundo Numero:");
-    valorDigitado2 = Console.ReadLine() ?? string.Empty; // Use null-coalescing operator to ensure non-null value  
-    isNumero2 = VerificaSeENumero(valorDigitado2);
+    string valorDigitado2 = Console.ReadLine() ?? string.Empty;
+    bool isNumero2 = decimal.TryParse(valorDigitado2, out decimal valor2);
+
     Console.WriteLine("\n");
 
-    if (isNumero2)
+    if (!isNumero1 || !isNumero2)
     {
-        valor2 = decimal.Parse(valorDigitado2);
+        Console.WriteLine("Informe numeros validos.");
+        return (0, 0, false);
     }
-    else
-    {
-        Console.WriteLine("Informe um numero valido.");
-    }
-}
 
-static bool VerificaSeENumero(string numero)
-{
-    return decimal.TryParse(numero, out _);
+    return (valor1, valor2, true);
 }
 
 static void MontaCabecalhoCalculadora()
