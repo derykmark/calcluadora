@@ -21,7 +21,7 @@ namespace DotNet.Calculadora
                 MontaCabecalhoCalculadora();
                 opcao = LerOpcaoUsuario();
 
-                if (opcao > 0 && opcao <= 4)
+                if (opcao > 0 && opcao <= 5)
                 {
                     ExecutarOperacao(opcao);
                 }
@@ -42,6 +42,7 @@ namespace DotNet.Calculadora
                     2 => _operacoes.Subtrair(valor1, valor2),
                     3 => _operacoes.Multiplicar(valor1, valor2),
                     4 => _operacoes.Dividir(valor1, valor2),
+                    5 => _operacoes.Porcentagem(valor1, valor2),
                     _ => null
                 };
 
@@ -65,7 +66,7 @@ namespace DotNet.Calculadora
         {
             while (true)
             {
-                Console.WriteLine("Informe uma opcao (1-4) ou (-1 para sair):");
+                Console.WriteLine("Informe uma opcao (1-5) ou (-1 para sair):");
                 string entrada = Console.ReadLine() ?? string.Empty;
                 if (int.TryParse(entrada, out int opcao))
                 {
@@ -102,7 +103,9 @@ namespace DotNet.Calculadora
             Console.WriteLine("1 - Soma");
             Console.WriteLine("2 - Subtracao");
             Console.WriteLine("3 - Multiplicacao");
-            Console.WriteLine("4 - Divisao \n");
+            Console.WriteLine("4 - Divisao");
+            Console.WriteLine("5 - Porcentagem");
+            Console.WriteLine("\n");
         }
 
         private string ObterNomeOperacao(int opcao)
@@ -113,6 +116,7 @@ namespace DotNet.Calculadora
                 2 => "Subtração",
                 3 => "Multiplicação",
                 4 => "Divisão",
+                5 => "Porcentagem",
                 _ => "Opção Inválida"
             };
         }
