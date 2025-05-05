@@ -47,7 +47,7 @@ namespace DotNet.Calculadora
 
                 if (resultado.HasValue)
                 {
-                    Console.WriteLine($"Resultado {resultado.Value}\n");
+                    Console.WriteLine($"Resultado: {resultado.Value}\n");
                 }
                 else
                 {
