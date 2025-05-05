@@ -22,7 +22,8 @@ static void ExecutarOperacao(int opcaoCalculadora, Operacoes operacoes)
 
     if (isValido)
     {
-        Console.WriteLine("---------------- RESULTADO ---------------- \n");
+        string nomeOperacao = ObterNomeOperacao(opcaoCalculadora);
+        Console.WriteLine($"------------------ {nomeOperacao.ToUpper()} ------------------ \n");
         decimal? resultado = opcaoCalculadora switch
         {
             1 => operacoes.Somar(valor1, valor2),
@@ -34,7 +35,7 @@ static void ExecutarOperacao(int opcaoCalculadora, Operacoes operacoes)
 
         if (resultado.HasValue)
         {
-            Console.WriteLine($"Resultado: {resultado.Value}\n");
+            Console.WriteLine($"Resultado {resultado.Value}\n");
         }
         else
         {
@@ -64,7 +65,7 @@ static int LerOpcaoUsuario()
 
 static (decimal, decimal, bool) MontaRequisicao()
 {
-    Console.WriteLine("Informe o Primeiro Numero:");
+    Console.WriteLine("\nInforme o Primeiro Numero:");
     string valorDigitado = Console.ReadLine() ?? string.Empty;
     bool isNumero1 = decimal.TryParse(valorDigitado, out decimal valor1);
 
@@ -90,4 +91,15 @@ static void MontaCabecalhoCalculadora()
     Console.WriteLine("2 - Subtracao");
     Console.WriteLine("3 - Multiplicacao");
     Console.WriteLine("4 - Divisao \n");
+}
+static string ObterNomeOperacao(int opcao)
+{
+    return opcao switch
+    {
+        1 => "Soma",
+        2 => "Subtração",
+        3 => "Multiplicação",
+        4 => "Divisão",
+        _ => "Opção Inválida"
+    };
 }
